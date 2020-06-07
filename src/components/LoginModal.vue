@@ -136,8 +136,8 @@ export default {
         .then(auth)
         .then(getAccountData)
         .then((userObject) => this.createPhotoURL(userObject))
-        .then((userObject) => this.setPublicUsertData(userObject))
-        .then((userObject) => this.setPrivateUsertData(userObject))
+        .then((userObject) => this.setPublicUserData(userObject))
+        .then((userObject) => this.setPrivateUserData(userObject))
         .then((userObject) => this.setLocalUserData(userObject))
         .catch((error) => this.onRejectted(error))
     },
@@ -193,14 +193,13 @@ export default {
         .then(auth)
         .then(getAccountData)
         .then((userObject) => this.createPhotoURL(userObject))
-        .then((userObject) => this.setPublicUsertData(userObject))
-        .then((userObject) => this.setPrivateUsertData(userObject))
+        .then((userObject) => this.setPublicUserData(userObject))
+        .then((userObject) => this.setPrivateUserData(userObject))
         .then((userObject) => this.setLocalUserData(userObject))
         .catch((error) => this.onRejectted(error))
     },
     google() {
       console.log('google')
-      // 認証
       const auth = () => {
         return new Promise((resolve, reject) => {
           var authUI = new firebase.auth.GoogleAuthProvider()
@@ -250,14 +249,13 @@ export default {
         .then(auth)
         .then(getAccountData)
         .then((userObject) => this.createPhotoURL(userObject))
-        .then((userObject) => this.setPublicUsertData(userObject))
-        .then((userObject) => this.setPrivateUsertData(userObject))
+        .then((userObject) => this.setPublicUserData(userObject))
+        .then((userObject) => this.setPrivateUserData(userObject))
         .then((userObject) => this.setLocalUserData(userObject))
         .catch((error) => this.onRejectted(error))
     },
     github() {
       console.log('github')
-      // 認証
       const auth = () => {
         return new Promise((resolve, reject) => {
           var authUI = new firebase.auth.GithubAuthProvider()
@@ -308,8 +306,8 @@ export default {
         .then(auth)
         .then(getAccountData)
         .then((userObject) => this.createPhotoURL(userObject))
-        .then((userObject) => this.setPublicUsertData(userObject))
-        .then((userObject) => this.setPrivateUsertData(userObject))
+        .then((userObject) => this.setPublicUserData(userObject))
+        .then((userObject) => this.setPrivateUserData(userObject))
         .then((userObject) => this.setLocalUserData(userObject))
         .catch((error) => this.onRejectted(error))
     },
@@ -367,9 +365,9 @@ export default {
       })
     },
     // ** 公開用のユーザー情報を設定
-    setPublicUsertData(userObject) {
+    setPublicUserData(userObject) {
       return new Promise((resolve, reject) => {
-        console.log('setPublicUsertData', userObject)
+        console.log('setPublicUserData', userObject)
         var publicUser = firestore.collection('users').doc(userObject.uid)
         debugger
         // ** usersに登録するObjのみを登録する
@@ -381,9 +379,9 @@ export default {
       })
     },
     // ** 非公開用のユーザー情報を設定
-    setPrivateUsertData(userObject) {
+    setPrivateUserData(userObject) {
       return new Promise((resolve, reject) => {
-        console.log('setPrivateUsertData', userObject)
+        console.log('setPrivateUserData', userObject)
         var privateUsers = firestore
           .collection('privateUsers')
           .doc(userObject.uid)
