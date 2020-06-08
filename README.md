@@ -1,14 +1,12 @@
 # この記事について
 
-これまでNuxtとFirebaseを使って、いくつかサービス開発をしていますが、認証/認可の部分はどのサービスでも毎回同じようなコードを書いている気がします。
+これまでNuxtとFirebaseを使って、いくつかサービス開発をしていますが、認証/認可の実装はどのサービスでも毎回同じようなコードを書いている気がします。
 
 サービスとしてのコア部分ではないですが、センシティブな部分なのでしっかりと調べながら実装すると結構大変ですよね（毎回時間がかかってしまいます）。
 
 <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ここ最近のサービスはNuxt +Firebaseで開発することが多く、認証 / 認可のコードベースのTipsが貯まってきたので公開したら需要あったりするのかな？<br>サンプルになりそうなプロジェクト見当たらないし、コアな部分ではないのであまり楽しくないし...。<br>雛形のプロジェクトとして需要あれば公開します👍</p>&mdash; フジワラユウタ | SlideLive▶️ (@Fujiyama_Yuta) <a href="https://twitter.com/Fujiyama_Yuta/status/1269472375151554560?ref_src=twsrc%5Etfw">June 7, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-自分だけではなく、サービス開発をする人は大体同じことを考えている気がします...。
-
-これから何かサービスを開発する人のための**Nuxt+Firebaseのスターター用のプロジェクト**を作成し、テンプレート化して使いまわせるようにリポジトリを公開しました。今回はそのリポジトリの概要を解説します。
+自分だけではなく、いろんな人が同じような課題感を感じているのではないかと思い、これから何かサービスを開発する人のための**Nuxt+Firebaseのスターター用のプロジェクト**を作成し、テンプレート化して使いまわせるようにリポジトリを公開しました。今回はそのリポジトリの概要を解説します。
 
 ※ 自分の考えるベストプラクティスなので、もっとこうした方がいいよね、これヤバそう...などのご意見やマサカリ、プルリク、フィードバック歓迎しております🙏
 
@@ -18,7 +16,9 @@
 * 認証認可のあるサービスをゼロから作ろうとしている人
 * `create-nuxt-app`ではない、サンプルのプロジェクトを動かしてみたい人
 
-# Githubのリモートリポジトリ
+※ Firebaseプロジェクトをゼロから作成する部分から解説するので、必要ない人は飛ばしてください🙏
+
+# Githubのリポジトリ
 
 下記のリポジトリをクローンしてください。
 
@@ -35,6 +35,16 @@ https://github.com/FujiyamaYuta/nuxt-firebase-project.git
   * Cloud Storage
   * Authentication
 
+# 環境
+
+```
+% firebase --version
+8.4.0
+
+% node -v
+v14.3.0
+```
+
 # Firebaseの設定
 
 今回はFirebaseの以下のサービスを使います（ある一定の転送量までは全て無料で使うことができます🙏）。それぞれがどのようなサービスかは、別で調べてみてください。
@@ -44,7 +54,7 @@ https://github.com/FujiyamaYuta/nuxt-firebase-project.git
 * Cloud Storage
 * Authentication
 
-まずはじめにFirebaseの設定を行いきましょう。以下のリンクからプロジェクトを作成してください。
+はじめにFirebaseの設定をします。以下のリンクからプロジェクトを作成してください。
 
 [Firebase - プロジェクトの追加](https://console.firebase.google.com/u/0/?hl=ja)
 https://console.firebase.google.com/u/0/?hl=ja
@@ -65,6 +75,13 @@ https://console.firebase.google.com/u/0/?hl=ja
 Authticationのバーをクリックして **Sign-in method** のタブをクリックして、Authticationで認証を許可するサービスを選択します。今回はGoogleの認証を使うので、以下の手順で許可してください。
 
 <img width="1440" alt="④.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/f2fc48e3-0f4e-9d95-c7e9-f677a11d66a3.png">
+
+Authticationでは、認証できるホストを管理することが可能です。カスタムドメインで認証を許可したい場合などは「ドメインを追加」から、追加することができます。
+
+GithubとTwitterで同じメールアドレスを使用しているユーザーの認証を許可したい場合、「1つのメールアドレスにつき複数のアカウント」に変更することで、同じメールアドレスでも複数のプロバイダからログインすることが可能になります。デフォルトは「1つのメールアドレスにつき1つのアカウント」なので、同じメールアドレスで認証は失敗します。
+
+<img width="1082" alt="スクリーンショット 2020-06-09 7.30.25.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/ad94cc10-68a8-1be8-938d-b2d163580d4e.png">
+
 
 ### ⑤ Cloud Firestoreをプロビジョニング
 
@@ -125,6 +142,9 @@ Nuxt側の設定は以上になります。
 
 
 # デプロイ
+
+ビルドしたモジュールをデプロイします。
+※firebase CLIでログインしていない方は `firebase login`を実行してください。
 
 ```
 // 先ほど作ったFirebaseプロジェクトが存在するか確認
@@ -454,7 +474,7 @@ export default {
 
 ## 認証済みユーザーかどうかの確認
 
-submitしたユーザーが本当に認証したユーザーかどうかを、データ登録前に確認したいことがあると思います。そのような場合には、以下
+submitしたユーザーが本当に認証したユーザーかどうかを、データ登録前に確認したいことがあると思います。そのような場合には、 `firebase.auth().onAuthStateChanged()`の関数を呼び出すことで、確認することができます。コールバックに認証済みのユーザー情報が付加されています。
 
 ```src/plugins/commonModule.js
 isCommonLoginUser() {
@@ -494,7 +514,7 @@ this.isCommonLoginUser().then((result)) =>
 
 Firebaseの特徴はクライアントサイドから、データを読み書きするため、悪意あるユーザーが不正をしてくる恐れがあるためセキュリティルールはしっかりと書きましょう。
 
-今回はルートにある`firestore.rules`と`storage.rules`というファイルにあらかじめセキュリティルールを追加しているため、 `firebase deploy`のコマンドを実行すると、自動的にセキュリティルールが反映されます。
+今回はルートにある`firestore.rules`と`storage.rules`というファイルにあらかじめセキュリティルールを追加しているため `firebase deploy`のコマンドを実行すると、自動的にセキュリティルールが反映されます。
 
 【Cloud Firestore セキュリティ ルールの条件の記述】
 https://firebase.google.com/docs/firestore/security/rules-conditions?hl=ja

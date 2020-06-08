@@ -42,7 +42,7 @@
           <textarea v-model="description" class="textarea" placeholder="e.g. Hello world"></textarea>
           <div class="field is-grouped" style="margin-top:0.6rem;">
             <div class="control">
-              <button class="button is-small" @click="editCansel">キャンセル</button>
+              <button class="button is-small" @click="editCancel">キャンセル</button>
             </div>
             <div class="control">
               <button class="button is-small is-link is-light" @click="editSubmit">登録</button>
@@ -108,7 +108,7 @@ export default {
       this.editFlag = false
       // ** Firestoreに登録する処理
     },
-    editCansel() {
+    editCancel() {
       this.editFlag = false
     }
   }

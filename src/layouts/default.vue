@@ -68,6 +68,7 @@ export default {
   },
   created() {
     // ** 毎回呼び出すのではなく、レンダリングされたときのみに実行される
+    // ** 毎回認証したい場合は src/middleware/authenticated.js に記述すればよさそう
     this.isLoginUser()
   },
   mounted() {

@@ -13,20 +13,20 @@ Vue.mixin({
     },
     // ** ローカルでログイン済みかどうかをチェックする
     localAuthCheck() {
-      var uid = localStorage.getItem('uid')
-      var photoURL = localStorage.getItem('photoURL')
-      var displayName = localStorage.getItem('displayName')
+      let uid = localStorage.getItem('uid')
+      let photoURL = localStorage.getItem('photoURL')
+      let displayName = localStorage.getItem('displayName')
       if (uid && photoURL && displayName) {
         return true
       }
       return false
     },
     getLocalUserInfo() {
-      var uid = localStorage.getItem('uid')
-      var photoURL = localStorage.getItem('photoURL')
-      var displayName = localStorage.getItem('displayName')
+      let uid = localStorage.getItem('uid')
+      let photoURL = localStorage.getItem('photoURL')
+      let displayName = localStorage.getItem('displayName')
       if (uid && photoURL && displayName) {
-        var obj = {}
+        let obj = {}
         obj.uid = uid
         obj.photoURL = photoURL
         obj.displayName = displayName
@@ -40,7 +40,7 @@ Vue.mixin({
           if (user) {
             // ** ログイン済のユーザー
             console.log('ok!!Login User!!')
-            var name, email, photoUrl, uid, emailVerified
+            let name, email, photoUrl, uid, emailVerified
             name = user.displayName
             email = user.email
             photoUrl = user.photoURL
@@ -68,7 +68,7 @@ Vue.mixin({
           location.reload()
         })
     },
-    dandomStr() {
+    randomStr() {
       let l = 48
 
       // 生成する文字列に含める文字セット
@@ -82,8 +82,8 @@ Vue.mixin({
       return r
     },
     createTagsArray(tags) {
-      var tagsArray = [];
-      for (var i = 0; i < tags.length; ++i) {
+      let tagsArray = [];
+      for (let i = 0; i < tags.length; ++i) {
         if (tags[i].text) {
           tagsArray.push(tags[i].text)
         } else {

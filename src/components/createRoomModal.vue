@@ -91,7 +91,7 @@ export default {
     create() {
       this.isCreateMoalActive = true
     },
-    submit() {
+    async submit() {
       this.roomNameFlag = false
       this.tagsFlag = false
       if (!this.roomName) {
@@ -104,7 +104,7 @@ export default {
         return
       }
       if (!this.password) {
-        var notPasswordFlag = confirm(
+        let notPasswordFlag = confirm(
           'パスワードは空の場合、ルームのURLを知っていればアクセスできる状態になりますがよろしいですか？'
         )
         if (!notPasswordFlag) {
@@ -112,10 +112,14 @@ export default {
         }
       }
 
-      // ** 登録処理
-      this.isCommonLoginUser()
-        .then((result) => this.isLoginUser(result))
-        .then((idLoginUser) => this.setRoomInfo(idLoginUser))
+      try {
+        // ** 登録処理
+        let result = await this.isCommonLoginUser()
+        let idLoginUser = await this.isLoginUser(result)
+        this.setRoomInfo(idLoginUser)
+      } catch (error) {
+        console.log(error)
+      }
     },
     isLoginUser(result) {
       return new Promise((resolve, reject) => {
@@ -134,18 +138,18 @@ export default {
     setRoomInfo(idLoginUser) {
       return new Promise((resolve, reject) => {
         console.log('setRoomInfo')
-        var localUserInfo = this.getLocalUserInfo()
+        let localUserInfo = this.getLocalUserInfo()
         console.log(localUserInfo)
-        var setRoomObj = {}
+        let setRoomObj = {}
         setRoomObj.uid = localUserInfo.uid
         setRoomObj.photoURL = localUserInfo.photoURL
         setRoomObj.displayName = localUserInfo.displayName
         setRoomObj.roomName = this.roomName
         setRoomObj.password = this.password
         setRoomObj.tagsArray = this.createTagsArray(this.tags)
-        setRoomObj.roomId = this.dandomStr()
+        setRoomObj.roomId = this.randomStr()
         setRoomObj.createAt = new Date()
-        var setRoom = firestore
+        let setRoom = firestore
           .collection('users')
           .doc(localUserInfo.uid)
           .collection('rooms')
