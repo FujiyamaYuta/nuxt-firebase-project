@@ -1,16 +1,16 @@
-# はじめに
-
 # この記事について
 
 これまでNuxtとFirebaseを使って、いくつかサービス開発をしていますが、認証/認可の部分はどのサービスでも毎回同じようなコードを書いている気がします。
 
 サービスとしてのコア部分ではないですが、センシティブな部分なのでしっかりと調べながら実装すると結構大変ですよね（毎回時間がかかってしまいます）。
 
-たぶん、自分だけではなく、サービス開発をする人は大体同じことを考えている気がします...。
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ここ最近のサービスはNuxt +Firebaseで開発することが多く、認証 / 認可のコードベースのTipsが貯まってきたので公開したら需要あったりするのかな？<br>サンプルになりそうなプロジェクト見当たらないし、コアな部分ではないのであまり楽しくないし...。<br>雛形のプロジェクトとして需要あれば公開します👍</p>&mdash; フジワラユウタ | SlideLive▶️ (@Fujiyama_Yuta) <a href="https://twitter.com/Fujiyama_Yuta/status/1269472375151554560?ref_src=twsrc%5Etfw">June 7, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-なので今回は**Nuxt+Firebaseのスターター用のプロジェクト**を作成し、テンプレート化して使いまわせるようにしておいた方が便利だよねということを考え、リポジトリを公開しつつ中身を紹介します。
+自分だけではなく、サービス開発をする人は大体同じことを考えている気がします...。
 
-※ 自分の考えるベストプラクティスなので、もっとこうした方がいいよね、これヤバそう...などのご意見やマサカリ、プルリク、フィードバックは歓迎しております🙏
+これから何かサービスを開発する人のための**Nuxt+Firebaseのスターター用のプロジェクト**を作成し、テンプレート化して使いまわせるようにリポジトリを公開しました。今回はそのリポジトリの概要を解説します。
+
+※ 自分の考えるベストプラクティスなので、もっとこうした方がいいよね、これヤバそう...などのご意見やマサカリ、プルリク、フィードバック歓迎しております🙏
 
 # 対象
 
@@ -23,14 +23,13 @@
 下記のリポジトリをクローンしてください。
 
 [nuxt-firebase-project](https://github.com/FujiyamaYuta/nuxt-firebase-project.git)
-
 https://github.com/FujiyamaYuta/nuxt-firebase-project.git
 
 # 技術
 
 * Nuxt.js
 * Buefy + Bulma
-* Firebase
+* Firebase🔥
   * Hosting
   * Cloud Firestore
   * Cloud Storage
@@ -38,8 +37,7 @@ https://github.com/FujiyamaYuta/nuxt-firebase-project.git
 
 # Firebaseの設定
 
-今回はFirebaseの以下のサービスを使います（ある一定の転送量までは全て無料で使うことができます🙏）。
-それぞれがどんなサービスかは、別で調べてみてください。
+今回はFirebaseの以下のサービスを使います（ある一定の転送量までは全て無料で使うことができます🙏）。それぞれがどのようなサービスかは、別で調べてみてください。
 
 * Hosting
 * Cloud Firestore
@@ -49,7 +47,6 @@ https://github.com/FujiyamaYuta/nuxt-firebase-project.git
 まずはじめにFirebaseの設定を行いきましょう。以下のリンクからプロジェクトを作成してください。
 
 [Firebase - プロジェクトの追加](https://console.firebase.google.com/u/0/?hl=ja)
-
 https://console.firebase.google.com/u/0/?hl=ja
 
 ### ① プロジェクトを作る
@@ -157,17 +154,16 @@ Require stack:
 これで、URLからアクセスができたはずです🙌 おつかれさまでした！Google認証をすると、認証結果の情報がFirestoreに登録されています。
 
 ※ Github、Twitter、Facebookについても、Firebaseと連携すれば認証が使えるようになります。
-
 <img width="1440" alt="スクリーンショット 2020-06-08 12.44.35.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/29eaf1ba-f8f5-605d-7ab3-0eb9b5eb08bf.png">
 
 <img width="1437" alt="スクリーンショット 2020-06-08 12.45.40.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/dc4675e6-d52e-8c07-0bf0-965abd47d2dc.png">
 
 
-これで動くものがデプロイでき動作確認ができたので、Nuxtの説明をしていきます。
+動くものがデプロイでき、動作確認ができたのでNuxtの説明をします。
 
 # プロジェクトの紹介
 
-クローンしたプロジェクトは以下のようになっています。 `.eslintrc.js` や `nuxt.config.js` は僕の標準の物を入れいているので、個人のお好みでカスタマイズしてください。
+クローンしたプロジェクトは以下のようになっています。 `.eslintrc.js` や `nuxt.config.js` は自分標準のファイルを入れいているので、個人のお好みでカスタマイズしてください。
 
 `src`配下に開発者用のソースが格納されています。
 
@@ -223,7 +219,7 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
   });
   ```
 
-Firebaseの関数はほとんどか非同期処理になっているので、①をした後に②をして③をして④をするみたいに同期処理にしたい場合はPromiseやasync/awaitを使う必要がありそうですね。コールバックの後に続けて書いてもいいですが、ネストが深くなりコードが読みにくくなるので、あまりオススメではありません。
+Firebaseの関数はほとんどか非同期処理になっているので、①をした後に②をして③をして④をする...のような同期処理にしたい場合はPromiseやasync/awaitを使う必要がありそうですね。コールバックの後に続けて書いてもいいですが、ネストが深くなりコードが読みにくくなるので、あまりオススメではありません。
 
 いい感じに関数化して、順番に呼び出すような書き方をしてみました。
 
@@ -456,9 +452,9 @@ export default {
 
 <img width="1440" alt="スクリーンショット 2020-06-08 12.24.50.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/2ce50fd2-90df-d266-e643-0d67be8c04a8.png">
 
-## 認証ユーザーかどうか？
+## 認証済みユーザーかどうかの確認
 
-submitしたユーザーが本当に認証したユーザーかどうかを、データ登録前に確認したいことがあると思います。
+submitしたユーザーが本当に認証したユーザーかどうかを、データ登録前に確認したいことがあると思います。そのような場合には、以下
 
 ```src/plugins/commonModule.js
 isCommonLoginUser() {
@@ -544,7 +540,9 @@ service firebase.storage {
 
 # 終わりに
 
-今回はNuxt+Firebaseでスターター用のプロジェクトを作ってみました。何かこれからサービスを作ろうと考えたときに、認証・認可を実装することになると思いますが、結構大変ですし、コア部分ではないので楽しくないんですよね...。
-動くアプリケーションを試しながら、コードを読んでいきイメージを掴むのもよいかもしれません。
+Nuxt+Firebaseでスターター用のプロジェクトを作ってみました。何かこれからサービスを作ろうと考えるときに、参考にするリポジトリのひとつになればと思います🙏
 
 もっとこうした方がいいよね、これヤバそう...などのご意見やマサカリ、プルリク、フィードバックがありましたら、ぜひお願いいたします。
+
+[nuxt-firebase-project](https://github.com/FujiyamaYuta/nuxt-firebase-project.git)
+https://github.com/FujiyamaYuta/nuxt-firebase-project.git
