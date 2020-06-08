@@ -1,6 +1,6 @@
 # この記事について
 
-これまでNuxtとFirebaseを使って、いくつかサービス開発をしていますが、認証/認可の実装はどのサービスでも毎回同じようなコードを書いている気がします。
+NuxtとFirebaseを使って、これまでいくつかサービス開発をしていますが、認証/認可の実装はどのサービスでも毎回同じようなコードを書いている気がします。
 
 サービスとしてのコア部分ではないですが、センシティブな部分なのでしっかりと調べながら実装すると結構大変ですよね（毎回時間がかかってしまいます）。
 
@@ -60,41 +60,41 @@ v14.3.0
 https://console.firebase.google.com/u/0/?hl=ja
 
 ### ① プロジェクトを作る
-<img width="1440" alt="①.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/fca6fd6b-8e59-0da4-6858-71cb55649a03.png">
+<img width="740" alt="①.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/fca6fd6b-8e59-0da4-6858-71cb55649a03.png">
 
 ### ② プロジェクト名を決める
-<img width="1437" alt="②.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/24fb68d9-5001-35e8-7bbd-28118bcbd2da.png">
+<img width="740" alt="②.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/24fb68d9-5001-35e8-7bbd-28118bcbd2da.png">
 
 ### ③ プロジェクトIDとウェブAPIキーを確認
 プロジェクト作成後の **「プロジェクトの管理」** の右の設定アイコンを押すとSettingsのページに遷移するのでそこから確認することができます。**プロジェクトID**と**ウェブAPIキー**はNuxt側に設定する必要があるのでメモしておいてください。
 
-<img width="1440" alt="③.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/b1db22bd-20c3-ea48-b4ac-7edbaa703506.png">
+<img width="740" alt="③.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/b1db22bd-20c3-ea48-b4ac-7edbaa703506.png">
 
 ### ④ AuthticationのGoogleの認証を許可する
 
 Authticationのバーをクリックして **Sign-in method** のタブをクリックして、Authticationで認証を許可するサービスを選択します。今回はGoogleの認証を使うので、以下の手順で許可してください。
 
-<img width="1440" alt="④.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/f2fc48e3-0f4e-9d95-c7e9-f677a11d66a3.png">
+<img width="740" alt="④.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/f2fc48e3-0f4e-9d95-c7e9-f677a11d66a3.png">
 
 Authticationでは、認証できるホストを管理することが可能です。カスタムドメインで認証を許可したい場合などは「ドメインを追加」から、追加することができます。
 
 GithubとTwitterで同じメールアドレスを使用しているユーザーの認証を許可したい場合、「1つのメールアドレスにつき複数のアカウント」に変更することで、同じメールアドレスでも複数のプロバイダからログインすることが可能になります。デフォルトは「1つのメールアドレスにつき1つのアカウント」なので、同じメールアドレスで認証は失敗します。
 
-<img width="1082" alt="スクリーンショット 2020-06-09 7.30.25.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/ad94cc10-68a8-1be8-938d-b2d163580d4e.png">
+<img width="740" alt="スクリーンショット 2020-06-09 7.30.25.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/ad94cc10-68a8-1be8-938d-b2d163580d4e.png">
 
 
 ### ⑤ Cloud Firestoreをプロビジョニング
 
 Databaseのバーをクリックして、Firestoreを方を選択してください。（RealTimeDatabaseもあるので注意）
-リージョンを選択できるので **asia-northeast1（東京）** を選択することをお勧めします。海外のリージョンを選択すると、物理的な距離が遠いのでレイテンシーが発生するため。
+リージョンを選択できるので **asia-northeast1（東京）** を選択することをお勧めします。海外のリージョンを選択すると、物理的な距離が遠いのでレイテンシが発生するため。
 
-<img width="1407" alt="⑤.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/28543921-29f1-ddbe-3ae4-91f62c34f26e.png">
+<img width="740" alt="⑤.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/28543921-29f1-ddbe-3ae4-91f62c34f26e.png">
 
 ### ⑥ Cloud Storageをプロビジョニング
 
 こちらもリージョンを選択できるので **asia-northeast1（東京）** を選択することをお勧めします。
 
-<img width="1440" alt="⑥.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/0b2caa06-3994-3c43-2a31-9c297147825c.png">
+<img width="740" alt="⑥.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/0b2caa06-3994-3c43-2a31-9c297147825c.png">
 
 Firebase側の設定は以上になります。
 
@@ -136,7 +136,7 @@ Nuxt側の設定は以上になります。
 
 `localhost:3000`でブラウザからアプリケーションが立ち上がるのを確認します。
 
-<img width="1439" alt="スクリーンショット 2020-06-08 12.17.39.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/b02722ff-e5ef-af3b-5e5c-897f75c5c118.png">
+<img width="740" alt="スクリーンショット 2020-06-08 12.17.39.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/b02722ff-e5ef-af3b-5e5c-897f75c5c118.png">
 
 とりあえず、ローカルでは動いています🙌
 
@@ -174,9 +174,9 @@ Require stack:
 これで、URLからアクセスができたはずです🙌 おつかれさまでした！Google認証をすると、認証結果の情報がFirestoreに登録されています。
 
 ※ Github、Twitter、Facebookについても、Firebaseと連携すれば認証が使えるようになります。
-<img width="1440" alt="スクリーンショット 2020-06-08 12.44.35.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/29eaf1ba-f8f5-605d-7ab3-0eb9b5eb08bf.png">
+<img width="740" alt="スクリーンショット 2020-06-08 12.44.35.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/29eaf1ba-f8f5-605d-7ab3-0eb9b5eb08bf.png">
 
-<img width="1437" alt="スクリーンショット 2020-06-08 12.45.40.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/dc4675e6-d52e-8c07-0bf0-965abd47d2dc.png">
+<img width="740" alt="スクリーンショット 2020-06-08 12.45.40.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/dc4675e6-d52e-8c07-0bf0-965abd47d2dc.png">
 
 
 動くものがデプロイでき、動作確認ができたのでNuxtの説明をします。
@@ -227,7 +227,8 @@ https://firebase.google.com/docs/auth/web/auth-state-persistence?hl=ja
 
 イメージとしては永続性をローカルストレージ/ セッションストレージ / メモリのどこに保持するか？という認識でよいを思います（Webの場合はデフォルト`local`）。`GoogleAuthProvider()` の関数を呼び出す前に、永続性の明示的に呼び出します。
 
-```
+```js
+
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
   .then(function() {
     return firebase.auth.GithubAuthProvider()
@@ -468,9 +469,9 @@ export default {
 
 上の処理を実行することで、FirestoreとFirestorageにデータが登録されます🙌 コードは一部になりますが、`LoginModal.vue`というファイルをチェックしてみてください。
 
-<img width="1434" alt="スクリーンショット 2020-06-08 12.24.32.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/e16d3405-614a-49dc-d0cb-90dfbfc29dce.png">
+<img width="740" alt="スクリーンショット 2020-06-08 12.24.32.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/e16d3405-614a-49dc-d0cb-90dfbfc29dce.png">
 
-<img width="1440" alt="スクリーンショット 2020-06-08 12.24.50.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/2ce50fd2-90df-d266-e643-0d67be8c04a8.png">
+<img width="740" alt="スクリーンショット 2020-06-08 12.24.50.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/2ce50fd2-90df-d266-e643-0d67be8c04a8.png">
 
 ## 認証済みユーザーかどうかの確認
 
@@ -501,12 +502,14 @@ isCommonLoginUser() {
 
 ```js
 
-// ** 認証かどうかをチェックした後に何かしらの処理を実行する
-this.isCommonLoginUser().then((result)) =>
-  function(result) {
-    // ** resultはuser or false
-  }
-)
+async submit() {
+    try {
+        let result = await this.isCommonLoginUser()
+        // ** ↓↓ resultはuser or false ↓↓
+    } catch (error) {
+        console.log(error)
+    }
+},
 ```
 セキュリティルールでも制御はしていますが、念のためチェックするとより安全かもしれません。
 
@@ -553,9 +556,9 @@ service firebase.storage {
 最後に本当にユーザー情報以外のデータがFirestoreに登録されるかどうか確認してみましょう。
 `users/{uid}/rooms/{roomId}/**` にデータが登録されているはずです🙌
 
-<img width="1428" alt="スクリーンショット 2020-06-08 17.48.52.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/8a1e0838-ec7b-7822-05c6-d2c9e400c3b4.png">
+<img width="740" alt="スクリーンショット 2020-06-08 17.48.52.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/8a1e0838-ec7b-7822-05c6-d2c9e400c3b4.png">
 
-<img width="1440" alt="スクリーンショット 2020-06-08 17.49.21.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/9aafee21-8f35-becb-1ccc-77a7e90da6e4.png">
+<img width="740" alt="スクリーンショット 2020-06-08 17.49.21.png" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/147291/9aafee21-8f35-becb-1ccc-77a7e90da6e4.png">
 
 
 # 終わりに
