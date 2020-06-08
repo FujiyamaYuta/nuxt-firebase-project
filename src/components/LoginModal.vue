@@ -86,7 +86,6 @@ export default {
       const auth = () => {
         return new Promise((resolve, reject) => {
           var authUI = new firebase.auth.TwitterAuthProvider()
-          console.log('auth')
           // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
           firebase
             .auth()
@@ -100,6 +99,7 @@ export default {
               var errorMessage = error.message
               var email = error.email
               var credential = error.credential
+              reject(error)
             })
         })
       }
@@ -107,8 +107,6 @@ export default {
       // ユーザー情報登録
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
-          console.log('createAccount', result)
-
           // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
           var userObject = {}
           var user = result.additionalUserInfo.profile
@@ -142,12 +140,10 @@ export default {
         .catch((error) => this.onRejectted(error))
     },
     facebook() {
-      console.log('facebook')
       // 認証
       const auth = () => {
         var authUI = new firebase.auth.FacebookAuthProvider()
         return new Promise((resolve, reject) => {
-          console.log('auth')
           // This gives you a the Facebook OAuth 1.0 Access Token and Secret.
           firebase
             .auth()
@@ -161,6 +157,7 @@ export default {
               var errorMessage = error.message
               var email = error.email
               var credential = error.credential
+              reject(error)
             })
         })
       }
@@ -168,8 +165,6 @@ export default {
       // ユーザー情報登録
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
-          console.log('createAccount', result)
-
           // This gives you a Facebook Access Token.
           var userObject = {}
           var user = result.user
@@ -198,12 +193,12 @@ export default {
         .then((userObject) => this.setLocalUserData(userObject))
         .catch((error) => this.onRejectted(error))
     },
+    // ** Google認証を行う関数
     google() {
-      console.log('google')
+      // ** ② Google認証
       const auth = () => {
         return new Promise((resolve, reject) => {
           var authUI = new firebase.auth.GoogleAuthProvider()
-          console.log('auth')
           // This gives you a the Google OAuth 1.0 Access Token and Secret.
           firebase
             .auth()
@@ -217,14 +212,14 @@ export default {
               var errorMessage = error.message
               var email = error.email
               var credential = error.credential
+              reject(error)
             })
         })
       }
 
-      // ユーザー情報登録
+      // ** ③ 認証後のユーザー情報を取得してオブジェクト化
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
-          console.log('getAccountData', result)
           // This gives you a Google Access Token.
           var userObject = {}
           var user = result.user
@@ -244,6 +239,7 @@ export default {
         })
       }
 
+      // ** 同期的に順番に処理を実行する
       Promise.resolve()
         .then(this.setPersistence)
         .then(auth)
@@ -255,11 +251,9 @@ export default {
         .catch((error) => this.onRejectted(error))
     },
     github() {
-      console.log('github')
       const auth = () => {
         return new Promise((resolve, reject) => {
           var authUI = new firebase.auth.GithubAuthProvider()
-          console.log('auth')
           // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
           firebase
             .auth()
@@ -273,6 +267,7 @@ export default {
               var errorMessage = error.message
               var email = error.email
               var credential = error.credential
+              reject(error)
             })
         })
       }
@@ -280,8 +275,6 @@ export default {
       // ユーザー情報登録
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
-          console.log('getAccountData', result)
-
           // This gives you a GitHub Access Token.
           var userObject = {}
           var user = result.user
@@ -319,7 +312,6 @@ export default {
         type: 'is-danger'
       })
       this.isLoginModalActive = false
-      console.log('onRejectted', error)
     },
     createPublicObj(obj) {
       var publicObj = {}
@@ -353,7 +345,7 @@ export default {
       privateObj.refreshToken = obj.refreshToken
       return privateObj
     },
-    // ** 公開用のユーザー情報を設定
+    // ** ① 認証状態を明示的にセットする
     setPersistence() {
       return new Promise((resolve, reject) => {
         firebase
@@ -364,10 +356,9 @@ export default {
           })
       })
     },
-    // ** 公開用のユーザー情報を設定
+    // ** ⑤ 公開可能なユーザー情報をFirestoreに登録
     setPublicUserData(userObject) {
       return new Promise((resolve, reject) => {
-        console.log('setPublicUserData', userObject)
         var publicUser = firestore.collection('users').doc(userObject.uid)
         debugger
         // ** usersに登録するObjのみを登録する
@@ -378,10 +369,9 @@ export default {
           })
       })
     },
-    // ** 非公開用のユーザー情報を設定
+    // ** ⑥ 非公開のユーザー情報をFirestoreに登録
     setPrivateUserData(userObject) {
       return new Promise((resolve, reject) => {
-        console.log('setPrivateUserData', userObject)
         var privateUsers = firestore
           .collection('privateUsers')
           .doc(userObject.uid)
@@ -393,7 +383,7 @@ export default {
           })
       })
     },
-    // ** 非公開用のユーザー情報を設定
+    // ** ⑦ ローカルストレージに保持するユーザー情報を設定
     setLocalUserData(userObject) {
       return new Promise((resolve, reject) => {
         var user = firestore.collection('users').doc(userObject.uid)
@@ -421,10 +411,10 @@ export default {
           })
       })
     },
-    // ** SNSから取得したURLをfirestorageに登録して、そのURLをfirestoreに登録する
+    // ** ④ 取得したアイコンのURLをFirestorageに登録して、そのURLをFirestoreに登録する準備
     createPhotoURL(userObject) {
       return new Promise((resolve, reject) => {
-        // ** TODO - 初めてじゃない場合はreject
+        // ** TODO - 初めてじゃない場合は処理しない対応が必要
         console.log(userObject)
         // This can be downloaded directly:
         var url = userObject.photoURL
@@ -433,7 +423,6 @@ export default {
         xhr.onload = function(event) {
           var blob = xhr.response
           let storageRef = storage.ref()
-          // ファイルのパスを設定
           let mountainsRef = storageRef.child(
             `user/${userObject.uid}/image.jpg`
           )
@@ -441,7 +430,7 @@ export default {
           uploadTask.then((snapshot) => {
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
               console.log(downloadURL)
-              // ** firestorageに登録したURLをfirestoreに登録する
+              // ** firestorageに登録したURLを登録するオブジェクトに代入
               userObject.photoURL = downloadURL
               resolve(userObject)
             })

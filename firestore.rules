@@ -14,13 +14,13 @@ service cloud.firestore {
     //   allow read, write: if request.time < timestamp.date(2020, 6, 15);
     // }
     match /users/{uid}/{allPaths=**} {
-			allow create: if request.auth != null;
-			allow read,update,delete: if request.auth.uid == uid;
-    }
-    match /privateUsers/{uid}/{allPaths=**} {
 			allow read;
 			allow create: if request.auth != null;
 			allow update,delete: if request.auth.uid == uid;
+    }
+    match /privateUsers/{uid}/{allPaths=**} {
+			allow create: if request.auth != null;
+			allow read,update,delete: if request.auth.uid == uid;
     }
   }
 }
