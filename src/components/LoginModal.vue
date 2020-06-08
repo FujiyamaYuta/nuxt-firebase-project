@@ -85,7 +85,7 @@ export default {
       // 認証
       const auth = () => {
         return new Promise((resolve, reject) => {
-          var authUI = new firebase.auth.TwitterAuthProvider()
+          const authUI = new firebase.auth.TwitterAuthProvider()
           // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
           firebase
             .auth()
@@ -95,10 +95,10 @@ export default {
             })
             .catch((error) => {
               // Handle Errors here.
-              var errorCode = error.code
-              var errorMessage = error.message
-              var email = error.email
-              var credential = error.credential
+              const errorCode = error.code
+              const errorMessage = error.message
+              const email = error.email
+              const credential = error.credential
               reject(error)
             })
         })
@@ -108,8 +108,8 @@ export default {
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
           // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
-          var userObject = {}
-          var user = result.additionalUserInfo.profile
+          let userObject = {}
+          let user = result.additionalUserInfo.profile
           userObject.token = result.credential.accessToken
           userObject.secret = result.credential.secret
           userObject.uid = result.user.uid
@@ -142,7 +142,7 @@ export default {
     facebook() {
       // 認証
       const auth = () => {
-        var authUI = new firebase.auth.FacebookAuthProvider()
+        const authUI = new firebase.auth.FacebookAuthProvider()
         return new Promise((resolve, reject) => {
           // This gives you a the Facebook OAuth 1.0 Access Token and Secret.
           firebase
@@ -153,10 +153,10 @@ export default {
             })
             .catch((error) => {
               // Handle Errors here.
-              var errorCode = error.code
-              var errorMessage = error.message
-              var email = error.email
-              var credential = error.credential
+              const errorCode = error.code
+              const errorMessage = error.message
+              const email = error.email
+              const credential = error.credential
               reject(error)
             })
         })
@@ -166,8 +166,8 @@ export default {
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
           // This gives you a Facebook Access Token.
-          var userObject = {}
-          var user = result.user
+          let userObject = {}
+          let user = result.user
           userObject.token = result.credential.accessToken
           userObject.refreshToken = user.refreshToken
           userObject.uid = user.uid
@@ -198,7 +198,7 @@ export default {
       // ** ② Google認証
       const auth = () => {
         return new Promise((resolve, reject) => {
-          var authUI = new firebase.auth.GoogleAuthProvider()
+          const authUI = new firebase.auth.GoogleAuthProvider()
           // This gives you a the Google OAuth 1.0 Access Token and Secret.
           firebase
             .auth()
@@ -208,10 +208,10 @@ export default {
             })
             .catch((error) => {
               // Handle Errors here.
-              var errorCode = error.code
-              var errorMessage = error.message
-              var email = error.email
-              var credential = error.credential
+              const errorCode = error.code
+              const errorMessage = error.message
+              const email = error.email
+              const credential = error.credential
               reject(error)
             })
         })
@@ -221,8 +221,8 @@ export default {
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
           // This gives you a Google Access Token.
-          var userObject = {}
-          var user = result.user
+          let userObject = {}
+          let user = result.user
           userObject.token = result.credential.accessToken
           userObject.refreshToken = user.refreshToken
           userObject.uid = user.uid
@@ -253,7 +253,7 @@ export default {
     github() {
       const auth = () => {
         return new Promise((resolve, reject) => {
-          var authUI = new firebase.auth.GithubAuthProvider()
+          const authUI = new firebase.auth.GithubAuthProvider()
           // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
           firebase
             .auth()
@@ -263,10 +263,10 @@ export default {
             })
             .catch((error) => {
               // Handle Errors here.
-              var errorCode = error.code
-              var errorMessage = error.message
-              var email = error.email
-              var credential = error.credential
+              const errorCode = error.code
+              const errorMessage = error.message
+              const email = error.email
+              const credential = error.credential
               reject(error)
             })
         })
@@ -276,8 +276,8 @@ export default {
       const getAccountData = (result) => {
         return new Promise((resolve, reject) => {
           // This gives you a GitHub Access Token.
-          var userObject = {}
-          var user = result.user
+          let userObject = {}
+          let user = result.user
           userObject.token = result.credential.accessToken
           userObject.refreshToken = user.refreshToken
           userObject.uid = user.uid
@@ -314,7 +314,7 @@ export default {
       this.isLoginModalActive = false
     },
     createPublicObj(obj) {
-      var publicObj = {}
+      let publicObj = {}
       publicObj.uid = obj.uid
       publicObj.providerId = obj.providerId
       publicObj.isNewUser = obj.isNewUser
@@ -336,7 +336,7 @@ export default {
       return publicObj
     },
     createPrivateObj(obj) {
-      var privateObj = {}
+      let privateObj = {}
       privateObj.uid = obj.uid
       privateObj.providerId = obj.providerId
       privateObj.isNewUser = obj.isNewUser
@@ -359,7 +359,7 @@ export default {
     // ** ⑤ 公開可能なユーザー情報をFirestoreに登録
     setPublicUserData(userObject) {
       return new Promise((resolve, reject) => {
-        var publicUser = firestore.collection('users').doc(userObject.uid)
+        let publicUser = firestore.collection('users').doc(userObject.uid)
         debugger
         // ** usersに登録するObjのみを登録する
         publicUser
@@ -372,7 +372,7 @@ export default {
     // ** ⑥ 非公開のユーザー情報をFirestoreに登録
     setPrivateUserData(userObject) {
       return new Promise((resolve, reject) => {
-        var privateUsers = firestore
+        let privateUsers = firestore
           .collection('privateUsers')
           .doc(userObject.uid)
         // ** privateUsersに登録するObjのみを登録する
@@ -386,7 +386,7 @@ export default {
     // ** ⑦ ローカルストレージに保持するユーザー情報を設定
     setLocalUserData(userObject) {
       return new Promise((resolve, reject) => {
-        var user = firestore.collection('users').doc(userObject.uid)
+        let user = firestore.collection('users').doc(userObject.uid)
         user
           .get()
           .then((doc) => {
@@ -417,11 +417,11 @@ export default {
         // ** TODO - 初めてじゃない場合は処理しない対応が必要
         console.log(userObject)
         // This can be downloaded directly:
-        var url = userObject.photoURL
-        var xhr = new XMLHttpRequest()
+        let url = userObject.photoURL
+        let xhr = new XMLHttpRequest()
         xhr.responseType = 'blob'
         xhr.onload = function(event) {
-          var blob = xhr.response
+          let blob = xhr.response
           let storageRef = storage.ref()
           let mountainsRef = storageRef.child(
             `user/${userObject.uid}/image.jpg`
