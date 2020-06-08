@@ -29,7 +29,6 @@
               placeholder="タグを5つまで追加できます"
               :tags="tags"
               :validation="validation"
-              :autocomplete-items="filteredItems"
               @tags-changed="(newTags) => (tags = newTags)"
             />
           </div>

@@ -8,14 +8,14 @@
 
 <script>
 import LoginModal from '~/components/LoginModal'
-import createRoomModal from '~/components/createRoomModal'
+import CreateRoomModal from '~/components/CreateRoomModal'
 
 export default {
   name: 'HomePage',
 
   components: {
     LoginModal,
-    createRoomModal
+    CreateRoomModal
   },
   data() {
     return {
