@@ -31,7 +31,20 @@ export default {
       } else {
         this.$refs.loginModal.login()
       }
+    },
+    isLoginUser(result) {
+      if (result) {
+        this.idLoginUser = true
+        console.log('ok!!!')
+      } else {
+        this.idLoginUser = false
+        console.log('not!!loginuser!!')
+      }
     }
+  },
+  created() {
+    // ** 毎回呼び出すのではなく、レンダリングされたときのみに実行される
+    this.isCommonLoginUser().then((result) => this.isLoginUser(result))
   }
 }
 </script>
