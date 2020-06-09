@@ -41,8 +41,8 @@ https://github.com/FujiyamaYuta/nuxt-firebase-project.git
 % firebase --version
 8.4.0
 
-% node -v
-v14.3.0
+ % npm -v
+6.14.4
 ```
 
 # Firebaseの設定
