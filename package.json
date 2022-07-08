@@ -16,7 +16,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "bulma-social": "^1.1.1",
     "firebase": "^7.14.5",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "node-sass": "^4.14.1",
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.2",
